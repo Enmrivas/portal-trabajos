@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "PaginaPrincipal";
+}
+
+<h2>PaginaPrincipal</h2>
+
+@if (Session["UserID"] != null)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">Buenos dias @Session["Name"].ToString()</h1>
+        <p class="lead">Bienvenido a nuestro portal web de trabajos</p>
+        <hr class="my-4">
+        <p>Crear contactos, ver usuarios registrados y editar anuncios de trabajos</p>
+        <a href="/Trabajos/ListaAdmin" class="btn btn-primary"><h5>Editar anuncios de trabajo</h5></a>
+        <a href="/Trabajos/ListaTrabajos" class="btn btn-primary"><h5>Anuncios de trabajo</h5></a>
+        <a href="/Users/Index" class="btn btn-primary"><h5>Usuarios registrados</h5></a>
+
+    </div>
+    <p>
+        @Html.ActionLink("Salir", "Login")
+    </p>
+}
+else
+{
+    <div class="jumbotron">
+        <h1 class="display-4">No hay usuario Ingresado</h1>
+        <p class="lead">Profavor haga login aqui</p>
+        <hr class="my-4">
+        <a class="btn btn-primary btn-lg" @Html.ActionLink("Login", "Login")
+    </div>
+}
