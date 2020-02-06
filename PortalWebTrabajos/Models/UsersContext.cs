@@ -9,7 +9,7 @@ namespace PortalWebTrabajos.Models
     public class UsersContext : DbContext
     {
 
-        public UsersContext() : base("name=UsersContext")
+        public UsersContext() : base("name=UsersDB")
         {
         }
         public System.Data.Entity.DbSet<PortalWebTrabajos.Models.Users> Users { get; set; }
