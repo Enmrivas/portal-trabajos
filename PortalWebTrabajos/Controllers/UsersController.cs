@@ -51,6 +51,7 @@ namespace PortalWebTrabajos.Controllers
         {
             if (ModelState.IsValid)
             {
+                users.Admin = false;
                 db.Users.Add(users);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -134,18 +135,20 @@ namespace PortalWebTrabajos.Controllers
             using (UsersContext db = new UsersContext())
             {
                 var usr = db.Users.SingleOrDefault(u => u.Username == user.Username && u.Password == user.Password);
-                if (usr != null && usr.Admin == true)
+                if (usr != null && usr.Admin)
                 {
                     Session["UserID"] = usr.UserID.ToString();
                     Session["Name"] = usr.Name.ToString();
                     return RedirectToAction("PaginaPrincipal");
                 }
-                else
+                else if(!usr.Admin){
+                    return RedirectToAction("PaginaUsuarioNormal");
+                }else
                 {
                     ModelState.AddModelError("", "Nombre de usuario o contraseña incorrectos.");
+                    return View();
                 }
             }
-            return View();
         }
 
         public ActionResult PaginaPrincipal()
