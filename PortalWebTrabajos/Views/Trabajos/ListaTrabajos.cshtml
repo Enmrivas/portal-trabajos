@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
@@ -31,9 +28,6 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Location)
         </td>
         <td>
@@ -43,9 +37,7 @@
             @Html.DisplayFor(modelItem => item.Position)
         </td>
         <td>
-            <a class = "btn btn-success" @Html.ActionLink("Editar", "Edit", new { id=item.JobID }) 
             <a class = "btn btn-primary" @Html.ActionLink("Detalles", "Details", new { id=item.JobID }) 
-            <a class = "btn btn-danger" @Html.ActionLink("Borrar", "Delete", new { id=item.JobID })
         </td>
     </tr>
 }

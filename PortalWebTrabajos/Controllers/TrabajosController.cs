@@ -20,6 +20,10 @@ namespace PortalWebTrabajos.Controllers
         {
             return View(await db.Trabajos.ToListAsync());
         }
+        public async Task<ActionResult> ListaTrabajos()
+        {
+            return View(await db.Trabajos.ToListAsync());
+        }
 
         // GET: Trabajos/Details/5
         public async Task<ActionResult> Details(int? id)

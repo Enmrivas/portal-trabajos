@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "PaginaPrincipal";
+    ViewBag.Title = "Pagina de usuario regular";
 }
 
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -11,7 +11,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Portal web de trabajos", "PaginaPrincipal", "Users", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Portal web de trabajos", "PaginaUsuarioNormal", "Users", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -28,9 +28,8 @@
         <p class="lead">Bienvenido a nuestro portal web de trabajos</p>
         <hr class="my-4">
         <p>Crear contactos, ver usuarios registrados y editar anuncios de trabajos</p>
-        <a href="/Trabajos/Index" class="btn btn-primary"><h5>Editar anuncios de trabajo</h5></a>
         <a href="/Trabajos/ListaTrabajos" class="btn btn-primary"><h5>Anuncios de trabajo</h5></a>
-        <a href="/Users/Index" class="btn btn-primary"><h5>Usuarios registrados</h5></a>
+
 
     </div>
     <p>

@@ -54,7 +54,7 @@ namespace PortalWebTrabajos.Controllers
                 users.Admin = false;
                 db.Users.Add(users);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("PaginaUsuarioNormal");
             }
 
             return View(users);
@@ -135,13 +135,13 @@ namespace PortalWebTrabajos.Controllers
             using (UsersContext db = new UsersContext())
             {
                 var usr = db.Users.SingleOrDefault(u => u.Username == user.Username && u.Password == user.Password);
-                if (usr != null && usr.Admin)
+                if (usr != null && usr.Admin == true)
                 {
                     Session["UserID"] = usr.UserID.ToString();
                     Session["Name"] = usr.Name.ToString();
                     return RedirectToAction("PaginaPrincipal");
                 }
-                else if(!usr.Admin){
+                else if(usr.Admin != true){
                     return RedirectToAction("PaginaUsuarioNormal");
                 }else
                 {
@@ -152,6 +152,17 @@ namespace PortalWebTrabajos.Controllers
         }
 
         public ActionResult PaginaPrincipal()
+        {
+            if (Session["UserID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+        public ActionResult PaginaUsuarioNormal()
         {
             if (Session["UserID"] != null)
             {
