@@ -16,9 +16,28 @@ namespace PortalWebTrabajos.Controllers
         private UsersContext db = new UsersContext();
 
         // GET: Users
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortOrder)
         {
-            return View(await db.Users.ToListAsync());
+
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.userNameSortParam = sortOrder == "Username" ? "user_desc" : "Username";
+            var users = from u in db.Users select u;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    users = users.OrderByDescending(u => u.Name);
+                    break;
+                case "Username":
+                    users = users.OrderBy(u => u.Username);
+                    break;
+                case "user_desc":
+                    users = users.OrderByDescending(u => u.Username);
+                    break;
+                default:
+                    users = users.OrderBy(u => u.Name);
+                    break;
+            }
+            return View(await users.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -49,12 +68,16 @@ namespace PortalWebTrabajos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register([Bind(Include = "UserID,Username,Name,Email,Password,Admin")] Users users)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !db.Users.Any(u => u.Username == users.Username) && !db.Users.Any(u=>u.Email == users.Email))
             {
                 users.Admin = false;
                 db.Users.Add(users);
                 await db.SaveChangesAsync();
                 return RedirectToAction("PaginaUsuarioNormal");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Usuario ya existe en la base de datos ");
             }
 
             return View(users);

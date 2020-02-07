@@ -16,22 +16,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Account")</li>
                 </ul>
             </div>
         </div>
     </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <p style="margin-top: 10px;">
+        @Html.ActionLink("Create New", "Create", "Trabajos", null, new { @class = "btn btn-success" })
+    </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Username)
+            <!--Html.DisplayNameFor(model => model.Username)-->
+            @Html.ActionLink("Username", "Index", new { sortOrder = ViewBag.userNameSortParam})
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Username", "Index", new { sortOrder = ViewBag.NameSortParam })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)

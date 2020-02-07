@@ -1,14 +1,38 @@
 ﻿@model IEnumerable<PortalWebTrabajos.Models.Trabajos>
 
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Lista de trabajos</h2>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("Portal web de trabajos", "PaginaPrincipal", "Users", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a class="btn btn-success" @Html.ActionLink("Create New", "Create")
+<p style="margin-top: 20px;">
+    @Html.ActionLink("Agregar nuevo anuncio de trabajo", "Create", "Trabajos", null, new { @class = "btn btn-success" })
 </p>
+@using (Html.BeginForm("Index", "Trabajos", FormMethod.Get))
+{
+<p>
+    Buscar por categoria: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+    <input class="btn btn-default" style="margin-top: 10px;" type="submit" value="Buscar" />
+</p>
+}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -16,10 +40,10 @@
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.ActionLink("Lugar", "Index", new { sortOrder = ViewBag.LocSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Company)
+                @Html.ActionLink("Compañia", "Index", new { sortOrder = ViewBag.CompSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Position)
@@ -28,26 +52,27 @@
         </tr>
     </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position)
-        </td>
-        <td>
-            <a class = "btn btn-success" @Html.ActionLink("Editar", "Edit", new { id=item.JobID }) 
-            <a class = "btn btn-primary" @Html.ActionLink("Detalles", "Details", new { id=item.JobID }) 
-            <a class = "btn btn-danger" @Html.ActionLink("Borrar", "Delete", new { id=item.JobID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.JobID }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.JobID }) |
+                @Html.ActionLink("Borrar", "Delete", new { id = item.JobID })
+            </td>
+        </tr>
+    }
 
 </table>

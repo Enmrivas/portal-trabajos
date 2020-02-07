@@ -1,4 +1,5 @@
 ﻿using System;
+using X.PagedList;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -13,16 +14,80 @@ namespace PortalWebTrabajos.Controllers
 {
     public class TrabajosController : Controller
     {
-        private TrabajosContext db = new TrabajosContext();
+        private UsersContext db = new UsersContext();
 
         // GET: Trabajos
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortOrder, string currentFilter, string SearchString, int? page)
         {
-            return View(await db.Trabajos.ToListAsync());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.LocSortParm = String.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
+            ViewBag.ComSortParm = sortOrder == "Company" ? "comp_desc" : "Company";
+
+            if (SearchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                SearchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = SearchString;
+
+            var job = from t in db.Trabajos
+                      select t;
+
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                job = job.Where(t => t.Category.Contains(SearchString));
+            }
+            switch (sortOrder)
+            {
+                case "loc_desc":
+                    job = job.OrderByDescending(t => t.Location);
+                    break;
+                case "Company":
+                    job = job.OrderBy(t => t.Company);
+                    break;
+                case "comp_desc":
+                    job = job.OrderByDescending(t => t.Company);
+                    break;
+                default:
+                    job = job.OrderBy(t => t.Location);
+                    break;
+            }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            return View(await job.ToListAsync());
         }
-        public async Task<ActionResult> ListaTrabajos()
+        public async Task<ActionResult> ListaTrabajos(string sortOrder, string SearchString)
         {
-            return View(await db.Trabajos.ToListAsync());
+            ViewBag.LocSortParm = String.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
+            ViewBag.ComSortParm = sortOrder == "Company" ? "comp_desc" : "Company";
+            var job = from t in db.Trabajos
+                           select t;
+            if (!String.IsNullOrEmpty(SearchString))
+            {
+                job = job.Where(t => t.Category.Contains(SearchString));
+            }
+            switch (sortOrder)
+            {
+                case "loc_desc":
+                    job = job.OrderByDescending(t => t.Location);
+                    break;
+                case "Company":
+                    job = job.OrderBy(t => t.Company);
+                    break;
+                case "comp_desc":
+                    job = job.OrderByDescending(t => t.Company);
+                    break;
+                default:
+                    job = job.OrderBy(t => t.Location);
+                    break;
+            }
+
+            return View(await job.ToListAsync());
         }
 
         // GET: Trabajos/Details/5
@@ -52,8 +117,6 @@ namespace PortalWebTrabajos.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                //ViewBag.MyCategory = new SelectList(dbc.Categories, "CatID", "Categoria");
                 db.Trabajos.Add(trabajos);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -76,10 +139,6 @@ namespace PortalWebTrabajos.Controllers
             }
             return View(trabajos);
         }
-
-        // POST: Trabajos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "JobID,Category,Location,Company,Position,Description")] Trabajos trabajos)

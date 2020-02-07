@@ -13,5 +13,6 @@ namespace PortalWebTrabajos.Models
         {
         }
         public System.Data.Entity.DbSet<PortalWebTrabajos.Models.Users> Users { get; set; }
+        public System.Data.Entity.DbSet<PortalWebTrabajos.Models.Trabajos> Trabajos { get; set; }
     }
 }
