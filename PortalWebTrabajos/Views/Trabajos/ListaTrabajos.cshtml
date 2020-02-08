@@ -29,7 +29,7 @@
 @using (Html.BeginForm("ListaTrabajos", "Trabajos", FormMethod.Get))
 {
     <p>
-        Buscar por categoria: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class="form-control" })
+        Buscar por categoria: @Html.TextBox("searchStringUser", ViewBag.CurrentFilter as string, new { @class="form-control" })
         <input class="btn btn-default" style="margin-top: 10px;" type="submit" value="Buscar" />
     </p>
 }

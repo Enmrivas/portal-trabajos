@@ -56,20 +56,19 @@ namespace PortalWebTrabajos.Controllers
                     break;
             }
 
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            
 
             return View(await job.ToListAsync());
         }
-        public async Task<ActionResult> ListaTrabajos(string sortOrder, string SearchString)
+        public async Task<ActionResult> ListaTrabajos(string sortOrder, string searchStringUser)
         {
             ViewBag.LocSortParm = String.IsNullOrEmpty(sortOrder) ? "loc_desc" : "";
             ViewBag.ComSortParm = sortOrder == "Company" ? "comp_desc" : "Company";
             var job = from t in db.Trabajos
                            select t;
-            if (!String.IsNullOrEmpty(SearchString))
+            if (!String.IsNullOrEmpty(searchStringUser))
             {
-                job = job.Where(t => t.Category.Contains(SearchString));
+                job = job.Where(t => t.Category.Contains(searchStringUser));
             }
             switch (sortOrder)
             {
